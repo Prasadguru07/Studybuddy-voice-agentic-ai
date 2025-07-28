@@ -1,5 +1,5 @@
 from langchain.agents import initialize_agent, Tool, AgentType
-from langchain_community.llms import Ollama
+from langchain_ollama import OllamaLLM  
 from langchain_community.tools import DuckDuckGoSearchRun
 from langchain.agents import Tool
 
@@ -11,7 +11,7 @@ from tools.code_example import get_code_example
 from tools.summary_tool import summarize_day
 from tools.search_tool import search_tool
 
-llm = Ollama(model="qwen2.5:0.5b")
+llm = OllamaLLM(model="qwen3:4b")
 
 # Defining LangChain Tools
 tools = [
@@ -41,6 +41,10 @@ tools = [
         description="Summarizes what was learned during the session."
     )
 ]
+import time
+
+# Before making the DuckDuckGo search call
+time.sleep(5)
 
 # Initialize Agent
 agent = initialize_agent(

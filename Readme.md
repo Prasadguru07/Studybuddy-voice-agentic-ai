@@ -1,6 +1,6 @@
 # 🧠 StudyBuddy: Voice-Powered Agentic AI for CS Major Learning
 
-StudyBuddy is an **Agentic AI-based voice assistant** designed to help students understand core **Computer Science** topics like **DBMS, OS, CN and SQL**. Built using cutting-edge **LLM (qwen2.5:0.5b via Ollama)** and integrated with tools for **web search, quiz generation, code examples, topic explanation**, and **daily summaries**.
+StudyBuddy is an **Agentic AI-based voice assistant** designed to help students understand core **Computer Science** topics like **DBMS, OS, CN and SQL**. Built using cutting-edge **LLM (qwen3:4b via Ollama)** and integrated with tools for **web search, quiz generation, code examples, topic explanation**, and **daily summaries**.
 
 
 
@@ -21,7 +21,7 @@ StudyBuddy is an **Agentic AI-based voice assistant** designed to help students 
 | Tool | Purpose |
 |------|---------|
 | [LangChain](https://www.langchain.com/) | Agent framework for LLM orchestration |
-| [Ollama](https://ollama.com/) | Local LLM runtime (qwen2.5:0.5b) |
+| [Ollama](https://ollama.com/) | Local LLM runtime (qwen3:4b) |
 | [Streamlit](https://streamlit.io/) | Web UI framework |
 | [SpeechRecognition](https://pypi.org/project/SpeechRecognition/) | Voice input |
 | [gTTS](https://pypi.org/project/gTTS/) | Text-to-speech |
@@ -30,7 +30,7 @@ StudyBuddy is an **Agentic AI-based voice assistant** designed to help students 
 
 
 
-## 📂 Folder Structure
+## 📂 Folder Structuree
 
 studybuddy-voice-agentic-ai/
 ├── main.py # Agent setup and routing
@@ -49,13 +49,13 @@ studybuddy-voice-agentic-ai/
 
 1. pip install requirements.txt
 
-2. install ollama locally and download desired model (ex: Ollama3 or qwen2.5:0.5b)
+2. install ollama locally and download desired model (ex: Ollama3 or qwen3:4b)
 
-3. ollama run qwen2.5:0.5b
+3. ollama run qwen3:4b
 
-4. ollama pull qwen2.5:0.5b
+4. ollama pull qwen3:4b
 
-5. streamlit run ui_streamlit.py
+5. streamlit run voice_app.py
 
 ### Example Prompts
 
