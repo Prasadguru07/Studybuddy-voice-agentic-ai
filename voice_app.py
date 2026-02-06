@@ -6,6 +6,13 @@ import platform
 import time
 from main import ask_studybuddy  # Make sure this returns the agent's response
 
+# Configure Streamlit page for wider layout
+st.set_page_config(
+    page_title="🧠 StudyBuddy Voice Assistant",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 def transcribe_audio():
     r = sr.Recognizer()
     with sr.Microphone() as source:
@@ -45,21 +52,26 @@ def display_response_with_code(response: str):
         st.warning("🤖 No response received.")
         return
 
-    if "```" in response:
-        parts = response.split("```")
-        st.markdown(f"**🧾 Answer:** {parts[0].strip()}")
-        for i in range(1, len(parts), 2):
-            code_block = parts[i].strip()
-            if any(x in code_block for x in ['─', '│', '┌', '└', '+']):
-                st.text(code_block)
-            else:
-                st.code(code_block, language="python")
-    elif '\n' in response and any(x in response.lower() for x in ['def ', 'class ', 'import ', '=', ':']):
-        st.code(response, language="python")
-    elif '│' in response or '+' in response or '─' in response:
-        st.text(response)
-    else:
-        st.markdown(f"**🧾 Answer:** {response}")
+    # Use expander for full response view
+    with st.expander("📖 Full Response (Click to expand)", expanded=True):
+        if "```" in response:
+            parts = response.split("```")
+            st.markdown(f"**🧾 Answer:** {parts[0].strip()}")
+            for i in range(1, len(parts), 2):
+                code_block = parts[i].strip()
+                if any(x in code_block for x in ['─', '│', '┌', '└', '+']):
+                    st.text(code_block)
+                else:
+                    st.code(code_block, language="python")
+        elif '\n' in response and any(x in response.lower() for x in ['def ', 'class ', 'import ', '=', ':']):
+            st.code(response, language="python")
+        elif '│' in response or '+' in response or '─' in response:
+            st.text(response)
+        else:
+            st.markdown(f"**🧾 Answer:** {response}")
+    
+    # Also show in scrollable text area
+    st.text_area("📋 Copy Response Here:", value=response, height=300, disabled=True)
 
 # 🧠 UI Start
 st.title("🧠 StudyBuddy Voice Assistant")
@@ -70,8 +82,10 @@ if st.button("🎤 Ask via Voice"):
     user_input = transcribe_audio()
     if user_input:
         try:
-            time.sleep(1)  # Optional: prevent fast repeated queries
-            response = ask_studybuddy(user_input)
+            # Show loading status
+            with st.spinner("🔄 Processing... (optimized for speed)"):
+                response = ask_studybuddy(user_input)
+            
             if response:
                 display_response_with_code(response)
                 speak_text(response)
@@ -86,8 +100,10 @@ with st.form("text_form"):
     submitted = st.form_submit_button("Ask")
     if submitted and user_text:
         try:
-            time.sleep(1)  # Optional: prevent fast repeated queries
-            response = ask_studybuddy(user_text)
+            # Show loading status
+            with st.spinner("🔄 Processing... (optimized for speed)"):
+                response = ask_studybuddy(user_text)
+            
             if response:
                 display_response_with_code(response)
                 speak_text(response)
