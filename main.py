@@ -11,7 +11,7 @@ from tools.code_example import get_code_example
 from tools.summary_tool import summarize_day
 from tools.search_tool import search_tool
 
-llm = OllamaLLM(model="qwen3:4b")
+llm = OllamaLLM(model="llama3")
 
 # Defining LangChain Tools
 tools = [
