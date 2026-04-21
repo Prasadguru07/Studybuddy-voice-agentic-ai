@@ -181,4 +181,4 @@ streamlit run app.py
 
 ---
 
-**StudyBuddy — Engineering Agentic Intelligence for Computer Science Education.**
+**StudyBuddy - Engineering Agentic Intelligence for Computer Science Education.**
