@@ -1,75 +1,184 @@
-# 🧠 StudyBuddy: Voice-Powered Agentic AI for CS Major Learning
+# 🧠 StudyBuddy: Agentic Voice-Orchestrator for CS
 
-StudyBuddy is an **Agentic AI-based voice assistant** designed to help students understand core **Computer Science** topics like **DBMS, OS, CN and SQL**. Built using cutting-edge **LLM (qwen3:4b via Ollama)** and integrated with tools for **web search, quiz generation, code examples, topic explanation**, and **daily summaries**.
+[![Python 3.12+](https://img.shields.io/badge/Python-3.12%2B-blue?logo=python\&logoColor=white)](https://www.python.org/)
+[![Ollama](https://img.shields.io/badge/Ollama-Local_Inference-orange?logo=ollama)](https://ollama.com/)
+[![LangChain](https://img.shields.io/badge/LangChain-Agentic_Framework-green?logo=langchain)](https://langchain.com/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-UI-red?logo=streamlit)](https://streamlit.io/)
 
+StudyBuddy is a high-performance **Agentic AI Assistant** designed for deep-focus Computer Science learning. By combining local LLMs with a multi-tool RAG architecture, it provides a privacy-first, voice-interactive tutor for **DBMS, OS, CN, and SQL**.
 
+---
 
-## 🚀 Features
+## 🏛️ Architecture & Logic Flow
 
-- 🎙️ **Voice-based interaction** using SpeechRecognition and gTTS
-- 📚 **Topic explanations** for DBMS, OS, CN, SQL
-- 🧾 **Quiz generation** with answers
-- 💡 **Code examples and diagrams**
-- 🧠 **Summarization of daily learning**
-- 🌐 **Web search integration** (RAG-enabled)
-- 🎨 Simple **Streamlit UI** for interaction
+StudyBuddy utilizes a **Router-Controller Pattern**. The LLM (Qwen3) serves as the "brain," dynamically selecting tools based on conversational intent.
 
+---
 
+## 🧩 System Architecture Diagram
 
-## 🛠️ Technologies & Tools Used
+```mermaid
+flowchart TD
 
-| Tool | Purpose |
-|------|---------|
-| [LangChain](https://www.langchain.com/) | Agent framework for LLM orchestration |
-| [Ollama](https://ollama.com/) | Local LLM runtime (qwen3:4b) |
-| [Streamlit](https://streamlit.io/) | Web UI framework |
-| [SpeechRecognition](https://pypi.org/project/SpeechRecognition/) | Voice input |
-| [gTTS](https://pypi.org/project/gTTS/) | Text-to-speech |
-| [Python 3.12+](https://www.python.org/) | Programming language |
-| Web scraping API or search tool | For real-time retrieval (RAG) |
+    %% CLIENT LAYER
+    User[User]
+    UI[Streamlit UI]
+    STT[Speech-to-Text\nSpeechRecognition]
+    TTS[Text-to-Speech\ngTTS]
 
+    %% AGENT LAYER
+    Orchestrator[LangChain Agent Orchestrator\nRouter-Controller Pattern]
+    LLM[Local LLM via Ollama\nqwen3:4b / llama3]
 
+    %% TOOLING LAYER
+    Explainer[Explainer Tool\nCS Theory Engine]
+    Quiz[Quiz Engine\nMCQ Generator]
+    Code[Code Sandbox\nPython / SQL Generator]
+    RAG[RAG Search Tool\nWeb + Context Injection]
+    Memory[Memory Manager\nSession Summarizer]
 
-## 📂 Folder Structuree
+    %% DATA LAYER
+    Web[(External Knowledge APIs\nTavily / DuckDuckGo)]
+    LocalDocs[(Local Knowledge Base\nVector Store / Notes)]
 
-studybuddy-voice-agentic-ai/
-├── main.py # Agent setup and routing
-├── tools/
-│ ├── topic_explainer.py
-│ ├── quiz_generator.py
-│ ├── code_example.py
-│ ├── summary_tool.py
-│ └── search_tool.py
-├── ui_streamlit.py # Streamlit + voice interface
-├── README.md
+    %% FLOW
+    User --> UI
+    UI --> STT
+    STT --> Orchestrator
 
+    Orchestrator --> LLM
+    LLM --> Orchestrator
 
+    Orchestrator --> Explainer
+    Orchestrator --> Quiz
+    Orchestrator --> Code
+    Orchestrator --> RAG
+    Orchestrator --> Memory
 
-## ✅ Setup Instructions
+    RAG --> Web
+    RAG --> LocalDocs
 
-1. pip install requirements.txt
+    Explainer --> Orchestrator
+    Quiz --> Orchestrator
+    Code --> Orchestrator
+    RAG --> Orchestrator
+    Memory --> Orchestrator
 
-2. install ollama locally and download desired model (ex: Ollama3 or qwen3:4b)
+    Orchestrator --> TTS
+    TTS --> UI
+    UI --> User
+```
 
-3. ollama run qwen3:4b
+---
 
-4. ollama pull qwen3:4b
+### System Workflow
 
-5. streamlit run voice_app.py
+1. **Ingestion:** Real-time audio capture via `SpeechRecognition`.
+2. **Orchestration:** `LangChain` agent parses intent and dispatches to specialized Python modules.
+3. **Augmentation:** Fetches real-time data via **RAG** (Retrieval-Augmented Generation) or local vector stores.
+4. **Synthesis:** Outputs structured text/code and converts to audio via `gTTS`.
 
-### Example Prompts
+---
 
-"Explain normalization in DBMS."
+## 🔄 Detailed Execution Flow
 
-"Create five quiz questions on computer networks."
+### 1️⃣ Perception Layer
 
-"Show me a code example of bubble sort in Python."
+* Audio input captured using `SpeechRecognition`
+* Noise filtering and preprocessing applied
+* Text query forwarded to the agent controller
 
-"Summarize what I learned today."
+### 2️⃣ Reasoning Layer
 
-"Search recent cybersecurity attacks."
+* `qwen3:4b` running via Ollama interprets user intent
+* LangChain Agent performs functional tool-calling
+* Router selects appropriate specialized module
 
+### 3️⃣ Tool Execution Layer
 
-### Feedback & Contributions
+Depending on intent, the system may:
 
-Pull requests are welcome! For major changes, open an issue first.
+* Generate deep theoretical explanations (DBMS, OS, CN)
+* Create Bloom’s Taxonomy-based MCQs
+* Produce optimized SQL/Python snippets
+* Trigger RAG-based academic search
+* Update session memory summary
+
+### 4️⃣ Response Synthesis Layer
+
+* Structured text returned to orchestrator
+* Converted to natural speech using `gTTS`
+* Rendered inside Streamlit interface
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer            | Technology              | Role                                    |
+| :--------------- | :---------------------- | :-------------------------------------- |
+| **Brain**        | `Ollama` / `qwen3:4b`   | Local Reasoning & Intent Classification |
+| **Orchestrator** | `LangChain`             | Agent Tool-Calling & Tool Routing       |
+| **Interface**    | `Streamlit`             | Reactive Web Dashboard                  |
+| **Audio**        | `gTTS` & `PyAudio`      | Seamless STT/TTS Loop                   |
+| **Search**       | `Tavily` / `DuckDuckGo` | Real-time Academic RAG                  |
+
+---
+
+## ✨ Features
+
+* **🎙️ Hands-Free Learning:** Low-latency voice-to-voice interaction.
+* **🧩 Tool-Augmented reasoning:** Dynamically generates **MCQs**, **SQL snippets**, and **Mermaid.js** diagrams.
+* **💾 Memory Persistence:** Tracks learning progress to generate a "Daily Knowledge Delta."
+* **🔒 Local-First:** No data leakage—inference runs entirely on your hardware via Ollama.
+
+---
+
+## 📂 Engineering Structure
+
+```bash
+studybuddy/
+├── 📁 agents/           # LangChain Logic (Router/Prompts)
+├── 📁 tools/            # Specialized Engines (Quiz, Code, RAG, Memory)
+├── 📁 assets/           # Dynamic Visualizations & Diagrams
+├── 📄 app.py            # Streamlit Reactive UI & Voice Loop
+└── 📄 requirements.txt  # Environment Manifest
+```
+
+---
+
+## 🚀 Deployment Overview
+
+### Environment Setup
+
+```bash
+python -m venv venv
+source venv/bin/activate   # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+### Initialize Local LLM
+
+```bash
+ollama serve
+ollama pull qwen3:4b
+```
+
+### Launch Application
+
+```bash
+streamlit run app.py
+```
+
+---
+
+## 📌 Architectural Highlights
+
+* **Agentic Router-Controller Pattern**
+* **Multi-Tool Execution Graph**
+* **Hybrid RAG (Web + Local Vector Store)**
+* **Session-Aware Learning Memory**
+* **Privacy-First Local Inference**
+
+---
+
+**StudyBuddy — Engineering Agentic Intelligence for Computer Science Education.**
